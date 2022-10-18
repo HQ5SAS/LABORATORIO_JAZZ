@@ -1,16 +1,15 @@
 from email.mime import image
 from PIL import Image
+import PIL
 from pytesseract import pytesseract
 import cv2
 
-imagex= cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-trans_mask = imagex[:,:,3] == 0
 
 pytesseract.tesseract_cmd = 'C:\Program Files\Tesseract-OCR\\tesseract'
-path_to_image = 'imgCleaver.jpg'
-
-imagex[trans_mask] = [255, 255, 255, 255]
-new_img = cv2.cvtColor(imagex, cv2.COLOR_BGRA2BGR)
-print(pytesseract.image_to_string(new_img))
-
+#path_to_image = 'imgCleaver.jpg'
+#print(pytesseract.image_to_string(path_to_image))
+image = PIL.Image.open('imgCleaver.jpg')
+#720,330 
+new_image = image.resize((1440,660 ))
+print(pytesseract.image_to_string(new_image))
 
