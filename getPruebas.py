@@ -1,5 +1,9 @@
+from cgitb import text
 import requests
 import json
+import pandas
+import urllib.parse
+import urllib3
 
 def token_():
     parameters_= {
@@ -10,8 +14,26 @@ def token_():
     return json.loads(response_.text)["data"]["token"]
 
 autorizacion = {"Authorization": token_()}
-
-#descargable = requests.get("https://api.psicoweb.com/v1/Puestos", headers = autorizacion) --> para obtener el nombre de los cargos existentes(buscar "nombre")
+listaCar= []
+# listaPrubas=["Cleaver","PVC","Valores","NEC","NIC","NOC","FP16","Terman","Zavic"]
+# descargable = requests.get("https://api.psicoweb.com/v1/Puestos", headers = autorizacion)# --> para obtener el nombre de los cargos existentes(buscar "nombre")
 #descargable = requests.get("https://api.psicoweb.com/v1/aplicaciones/link/ExcelConcentrado?prueba=NEC&puesto=NECNOCTerVal", headers = autorizacion) -->Para obtner por puesto las pruebas
-descargable = requests.get("https://api.psicoweb.com/v1/aplicaciones/link/ExcelConcentrado?prueba=NIC&puesto=CleNIC", headers = autorizacion)
+descargable = requests.get("https://api.psicoweb.com/v1/aplicaciones/link/ExcelConcentrado?prueba=Cleaver&puesto=CleNIC", headers = autorizacion)
+open("test.xlm", "wb").write(descargable.content)
+# listaCargos= json.loads(descargable.text).get("data")
+# for x in listaCargos:
+#     var=x["nombre"]
+#     listaCar.append(urllib.parse.quote(var.encode('utf-8')))
+    
+# for a in listaPrubas:
+#     for y in listaCar:
+#         try:
+#             linkDesc = requests.get("https://api.psicoweb.com/v1/aplicaciones/link/ExcelConcentrado?prueba="+a+"&puesto="+y, headers = autorizacion)
+
+#             print(linkDesc.text)
+#         except:
+#             print("a")
+        
+
+# print (listaCargos [0]['nombre'])
 print( descargable.text)
