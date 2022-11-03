@@ -13,3 +13,4 @@ image = PIL.Image.open('imgCleaver.jpg')
 new_image = image.resize((1440,660 ))
 print(pytesseract.image_to_string(new_image))
 
+

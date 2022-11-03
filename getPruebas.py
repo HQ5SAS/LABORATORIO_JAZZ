@@ -11,5 +11,7 @@ def token_():
 
 autorizacion = {"Authorization": token_()}
 
-descargable = requests.get("https://api.psicoweb.com/v1/aplicaciones/link/ExcelConcentrado?prueba=NIC&cedula=53102572req18332&puesto=NICVal", headers = autorizacion)
+#descargable = requests.get("https://api.psicoweb.com/v1/Puestos", headers = autorizacion) --> para obtener el nombre de los cargos existentes(buscar "nombre")
+#descargable = requests.get("https://api.psicoweb.com/v1/aplicaciones/link/ExcelConcentrado?prueba=NEC&puesto=NECNOCTerVal", headers = autorizacion) -->Para obtner por puesto las pruebas
+descargable = requests.get("https://api.psicoweb.com/v1/aplicaciones/link/ExcelConcentrado?prueba=NIC&puesto=CleNIC", headers = autorizacion)
 print( descargable.text)
