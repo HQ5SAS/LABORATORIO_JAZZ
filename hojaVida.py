@@ -7,14 +7,13 @@ import json
 
 hv = pd.DataFrame(data=None)
 
-
 class SmartSearch:
     def __init__(self):
         pass
 
     @staticmethod
-    def process_database(ruta="C:/Users/CO-149//Downloads/Hojas de Vida Creadas (2).csv",
-                         ruta_out="c:/Users/CO-149/Downloads/out.csv"):
+    def process_database(ruta="C:\\Users\\CO-166\\Desktop\\AdquisInfo\\baseHV.csv",
+                         ruta_out="C:\\Users\\CO-166\\Desktop\\AdquisInfo\\outHV.csv"):
         hv = pd.read_csv(ruta)
 
         def normalize(s, replacements):
@@ -62,13 +61,13 @@ class SmartSearch:
 
         hv["num_cargos"] = 0
         for index in range(0, len(hv)):
-            if type(hv["cargos"][index]) == str:
-                hv["num_cargos"][index] = hv["cargos"][index].count("| ,") + 1
+            if type(hv["historia_laboral"][index]) == str:
+                hv["num_cargos"][index] = hv["historia_laboral"][index].count("| ,") + 1
             else:
                 hv["num_cargos"][index] = 0
 
         # Contabilizamos la catidad de trabajos que ha tenido hasta la fecha
-        Experiencia = "cargos"
+        Experiencia = "historia_laboral"
         var_ref = "num_cargos"
         hv[[Experiencia, var_ref]].describe()
         sns.histplot(hv["num_cargos"])
@@ -89,7 +88,7 @@ class SmartSearch:
             if hv["num_cargos"][x] == 0:
                 hv["lista_cargos"][x] = ""
             else:
-                hv["lista_cargos"][x] = string_to_list(hv["cargos"][x])
+                hv["lista_cargos"][x] = string_to_list(hv["historia_laboral"][x])
 
         hv["lista_estudios"] = ""
         for x in hv.index:
@@ -290,4 +289,4 @@ class SmartSearch:
         return hv_final
 
 
-#
+SmartSearch.process_database()
