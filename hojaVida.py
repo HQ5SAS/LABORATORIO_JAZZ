@@ -288,5 +288,3 @@ class SmartSearch:
         hv_final = pd.concat([base, df], axis=1)
         return hv_final
 
-
-SmartSearch.process_database()
