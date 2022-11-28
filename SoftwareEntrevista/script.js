@@ -1,16 +1,17 @@
 const videoButton= document.getElementById('video_bttn');
-const video = document.getElementById('video');
+const video = document.getElementById('video_');
 
 let mediaRecorder;
 
 videoButton.onclick=()=>{
+    console.log(videoButton.textContent);
     switch(videoButton.textContent){
-        case 'Record':
-            videoButton.textContent ='Stop';
+        case 'Grabar':
+            videoButton.textContent ='Detener';
             startRecording();
             break;
-        case 'Stop':
-            videoButton.textContent='Record';
+        case 'Detener':
+            videoButton.textContent='Grabar';
             stopRecording();
             break;    
     }
@@ -24,32 +25,39 @@ async function init(){
                 video: true
             }
         );
+        startWebCamera(stream);
     }
     catch(e){
         console.log("Error con el dispositivo de video");
+        console.log(e);
     }
     
 }
 
-function startWebCemere(stream) 
+function startWebCamera(stream) 
 {
     video.srcObject = stream;
     window.stream = stream;
 }
 
 function startRecording(){
-    if (video.srcObject==null){
-       video.srcObject =  window.stream;
+    console.log('init recordong')
+    if (video.srcObject===null){
+        video.srcObject =  window.stream;
     }
-    mediaRecorder= new mediaRecorder(window,stream,{mimeType: 'video/webm/codecs=vp9,opus'});
+    mediaRecorder= new MediaRecorder(window.stream,{mimeType:'video/webm;codecs=vp9'});
     mediaRecorder.start();
-    mediaRecorder.ondataavailable = recordvideo;
+    mediaRecorder.ondataavailable = recordVideo;
 }
 
-function recordvideo(event){
+function recordVideo(event){
     if (event.data && event.data.size > 0){
         video.srcObject=null;
         let videoUrl=URL.createObjectURL(event.data);
         video.src=videoUrl;
     }
 }
+function stopRecording(){
+    mediaRecorder.stop();
+}
+init();

@@ -18,26 +18,56 @@
   <header class="mb-auto">
     <div>
       <h3 class="float-md-start mb-0">HQ5 Entrevistas</h3>
-      <nav class="nav nav-masthead justify-content-center float-md-end">
-        <a class="nav-link py-1 px-0" href="./index.html">Recomendaciones</a>
-        <a class="nav-link py-1 px-0" href="./empezar.html">Empezar</a>
-        <a class="nav-link py-1 px-0" href="./contacto.html">Contacto</a>
+      <nav class="nav justify-content-center float-md-end">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="./index.html">Consejos</a>
+          <a class="navbar-brand " href="./empezar.html">Empezar</a>
+          <a class="navbar-brand " href="./contacto.html">Contacto</a>
+      </div>
       </nav>
     </div>
   </header>
-
-  <main class="px-3">
-    <div id="cotainer_video">
-        <video id="video" playsinline autoplay loop>
-          No puede cargar el video :c
-        </video>
-        <div id="video_bttn">
-            Record
+  <body>
+    <div class="wrapper">
+      <div class="inner" id="center_container">
+        <form action="">
+          <h3>Contáctanos</h3>
+          <p>Para cualquier sugerencia, duda o inquietud, déjanos tus datos y dinos cómo te podemos ayudar.</p>
+          <label class="form-group">
+          <input type="text" class="form-control" required="">
+          <span>Nombre</span>
+          </label>
+          <div class="mb-3">
+          <label class="form-group">
+            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            <span for="">Tu correo electrónico</span>
+          </label>
         </div>
+        <div class="mb-3">
+          
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <label for="exampleFormControlTextarea1" class="form-label">Mensaje</label>
+            </label>
+        </div>
+          
+            <button class="btn btn-lg btn-secondary fw-bold border-white">Submit
+            <i class="zmdi zmdi-arrow-right"></i>
+
+            </button>
+        </form>
+      </div>
     </div>
-    <p class="lead">
-      <a href="#" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
-    </p>
+  
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'UA-23581568-13');
+  </script>
+  
+   
   </main>
 
   <footer class="mt-auto text-white-50">
