@@ -1,6 +1,6 @@
 const videoButton= document.getElementById('next_bttn');
 const video = document.getElementById('video_');
-const texto =document.getElementById('preguna_txt');
+var texto =document.getElementById('pregunta_txt');
 var preguntas=[
     '1.Háblame de ti',
     '2.¿Qué te gusta hacer en tu tiempo libre?',
@@ -11,25 +11,32 @@ var preguntas=[
     '7.¿Cuál es tu mayor debilidad o defecto?',
     '8.¿Por qué deberíamos contratarte?'
 ]
-
-
+var countPreguntas=0;
 
 let mediaRecorder;
 
 videoButton.onclick=()=>{
     console.log(videoButton.textContent);
-    cou
+    
     switch(videoButton.textContent){
         case 'Listo':
             videoButton.textContent ='Siguiente';
+            texto.textContent=preguntas[0];
             startRecording();
             break;
         case 'Siguiente':
-            videoButton.textContent='Grabar';
-            stopRecording();
-            break;       
+            countPreguntas ++;
+            if(countPreguntas<preguntas.length)
+            {
+                texto.textContent=preguntas[countPreguntas];
+            }
+            else
+            {
+                videoButton.textContent='Finalizar';    
+            }
+            break;   
         case 'Finalizar':
-            videoButton.textContent='Grabar';
+            videoButton.textContent='Listo';
             stopRecording();
             break;    
     }
