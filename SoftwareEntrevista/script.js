@@ -21,6 +21,7 @@ videoButton.onclick=()=>{
     switch(videoButton.textContent){
         case 'Listo':
             videoButton.textContent ='Siguiente';
+            texto.style.fontSize="xx-large";
             texto.textContent=preguntas[0];
             startRecording();
             break;
