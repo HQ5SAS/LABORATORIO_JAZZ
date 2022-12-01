@@ -14,7 +14,7 @@ var preguntas=[
 var countPreguntas=0;
 
 let mediaRecorder;
-
+//finción que acutua de forma secuencial para el btn, 
 videoButton.onclick=()=>{
     console.log(videoButton.textContent);
     
@@ -23,6 +23,7 @@ videoButton.onclick=()=>{
             videoButton.textContent ='Siguiente';
             texto.style.marginTop="40%";
             texto.textContent=preguntas[0];
+            texto.style.fontSize= "300%"
             startRecording();
             break;
         case 'Siguiente':
@@ -37,12 +38,13 @@ videoButton.onclick=()=>{
             }
             break;   
         case 'Finalizar':
-            videoButton.textContent='Envia';
+            texto.textContent="¡Muchas gracias por completar la entrevista! proximamente te contactaremos para informarte del proceso."
+            videoButton.style.display='none';
             stopRecording();
             break;    
     }
 }
-
+//solicita el acceso de audio y video desde la pag web
 async function init(){
     try {
         const stream = await navigator.mediaDevices.getUserMedia(
@@ -59,7 +61,7 @@ async function init(){
     }
     
 }
-
+//fn que inicia cámara
 function startWebCamera(stream) 
 {
     video.srcObject = stream;

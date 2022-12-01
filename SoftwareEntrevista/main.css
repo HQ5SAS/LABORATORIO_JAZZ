@@ -30,11 +30,14 @@
 
 }
 .center_ {
-  margin: 15%;
+  margin-top: 15%;
+  margin-left: 5%;
+  margin-right: 5%;
   
 }
 #pregunta_txt{
   font-family: 'Montserrat', sans-serif;
   font-size: 1.5vw;
+  height: 40%;
 
 }
