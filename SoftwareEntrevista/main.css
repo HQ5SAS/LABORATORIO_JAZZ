@@ -13,12 +13,7 @@
   border-radius: 20%;
   
 }
-#video_bttn{
-  transition-property: box-shadow;
-  transition-duration: .3;
-  max-width: 40%;
-  
-}
+
 .center_container {
   display: flex;
   flex-direction: column;
