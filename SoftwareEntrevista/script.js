@@ -21,7 +21,7 @@ videoButton.onclick=()=>{
     switch(videoButton.textContent){
         case 'Listo':
             videoButton.textContent ='Siguiente';
-            texto.style.fontSize="xx-large";
+            texto.style.marginTop="40%";
             texto.textContent=preguntas[0];
             startRecording();
             break;
@@ -31,13 +31,13 @@ videoButton.onclick=()=>{
             {
                 texto.textContent=preguntas[countPreguntas];
             }
-            else
+            else if (countPreguntas==preguntas.length)
             {
                 videoButton.textContent='Finalizar';    
             }
             break;   
         case 'Finalizar':
-            videoButton.textContent='Listo';
+            videoButton.textContent='Envia';
             stopRecording();
             break;    
     }
@@ -67,7 +67,6 @@ function startWebCamera(stream)
 }
 
 function startRecording(){
-    console.log('init recordong')
     if (video.srcObject===null){
         video.srcObject =  window.stream;
     }
