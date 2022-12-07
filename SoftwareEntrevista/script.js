@@ -13,6 +13,7 @@ var preguntas=[
     '¿Por qué deberíamos contratarte?'
 ]
 var countPreguntas=0;
+var transcripcion="";
 
 let mediaRecorder;
 //finción que acutua de forma secuencial para el btn, 
@@ -24,27 +25,34 @@ videoButton.onclick=()=>{
             videoButton.textContent ='Siguiente';
             texto.style.marginTop="40%";
             texto.textContent=preguntas[0];
-            texto.style.fontSize= "300%"
+            texto.style.fontSize= "250%"
+            recognition.start();
             startRecording();
+            nuPregunta=preguntas[0]
+            readTxt(nuPregunta);
             cronometrar();
+            cronometro.innerHTML="00:00";
             break;
         case 'Siguiente':
             countPreguntas ++;
             if(countPreguntas<preguntas.length)
             {
-                texto.textContent=preguntas[countPreguntas];
+                nuPregunta=preguntas[countPreguntas];
+                texto.textContent=nuPregunta;
+                readTxt(nuPregunta);
             }
             else if (countPreguntas==preguntas.length)
             {
-                videoButton.textContent='Finalizar';    
+                stopRecording();
+                videoButton.style.display='none'; 
+                recognition.abort();   
+                texto.style.fontSize= "150%"
+                texto.textContent = texto.textContent="¡Muchas gracias por completar la entrevista! proximamente te contactaremos para informarte del proceso."; 
+                console.log(transcripcion);    
+                clearInterval(id);
             }
             break;   
-        case 'Finalizar':
-            texto.textContent="¡Muchas gracias por completar la entrevista! proximamente te contactaremos para informarte del proceso."
-            videoButton.style.display='none';
-            stopRecording();
-            clearInterval(id);
-            break;    
+              
     }
 }
 //solicita el acceso de audio y video desde la pag web
@@ -66,7 +74,6 @@ async function init(){
     }
     m = 0;
     s = 0;
-    cronometro.innerHTML="00:00";
     
 }
 //fn que inicia cámara
@@ -112,3 +119,34 @@ function escribir(){
  } 
 //
 init();
+//------section transcripcion video
+//-verificar acceso a API
+try {
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    var recognition = new SpeechRecognition();
+    recognition.lang='es-ES';
+    recognition.continuous =true;
+    recognition.interimResults = false;
+
+  }
+  catch(e) {
+    console.error(e);
+    $('.no-browser-support').show();
+    $('.app').hide();
+  }
+  recognition.onresult = (event) => {
+    const results = event.results;
+    const frase=results[results.length-1][0].transcript;
+    transcripcion += frase;
+
+  }
+  //--lectura de texto
+  function readTxt(txt){
+    const hablar = new SpeechSynthesisUtterance();
+    hablar.text = txt;
+    hablar.volume =1;
+    hablar.rate =1;
+    hablar.pitch = 1;
+    window.speechSynthesis.speak(hablar);
+
+  }
