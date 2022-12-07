@@ -1,6 +1,7 @@
 const videoButton= document.getElementById('next_bttn');
 const video = document.getElementById('video_');
 var texto =document.getElementById('pregunta_txt');
+const cronometro = document.getElementById('timer')
 var preguntas=[
     'Háblame de ti',
     '¿Qué te gusta hacer en tu tiempo libre?',
@@ -25,6 +26,7 @@ videoButton.onclick=()=>{
             texto.textContent=preguntas[0];
             texto.style.fontSize= "300%"
             startRecording();
+            cronometrar();
             break;
         case 'Siguiente':
             countPreguntas ++;
@@ -41,11 +43,14 @@ videoButton.onclick=()=>{
             texto.textContent="¡Muchas gracias por completar la entrevista! proximamente te contactaremos para informarte del proceso."
             videoButton.style.display='none';
             stopRecording();
+            clearInterval(id);
             break;    
     }
 }
 //solicita el acceso de audio y video desde la pag web
 async function init(){
+    //inicializa cronometro en ceros )
+    
     try {
         const stream = await navigator.mediaDevices.getUserMedia(
             {
@@ -59,6 +64,9 @@ async function init(){
         console.log("Error con el dispositivo de video");
         console.log(e);
     }
+    m = 0;
+    s = 0;
+    cronometro.innerHTML="00:00";
     
 }
 //fn que inicia cámara
@@ -87,4 +95,20 @@ function recordVideo(event){
 function stopRecording(){
     mediaRecorder.stop();
 }
+//--Cronómetro
+function cronometrar(){
+    escribir();
+    id = setInterval(escribir,1000);
+}
+function escribir(){
+    var mAux, sAux;
+    s++;
+    if (s>59){m++;s=0;}
+
+    if (s<10){sAux="0"+s;}else{sAux=s;}
+    if (m<10){mAux="0"+m;}else{mAux=m;}
+
+    cronometro.innerHTML = mAux + ":" + sAux; 
+ } 
+//
 init();
