@@ -22,8 +22,12 @@ let mediaRecorder;
 //finción que acutua de forma secuencial para el btn, 
 videoButton.onclick=()=>{
     console.log(videoButton.textContent);
-    
+
     switch(videoButton.textContent){
+        case 'Probar sonido':
+            texto.textContent="Diga las palabras Hola, amarillo, adiós";
+            videoButton.textContent ='de nuevo';
+            break;
         case 'Listo':
             videoButton.textContent ='Siguiente';
             texto.style.marginTop="40%";
@@ -179,7 +183,6 @@ video.addEventListener('play',  () => {
         if (heightFace >=290){
             alertas.textContent="Alejese un poco de la cámara por favor";
             alertas.style.display='block'; 
-     //       divVideo.style.backgroundColor = "red";
         }
         else if(heightFace <=120){
             alertas.textContent="Acerquese un poco a la cámara por favor";
@@ -193,7 +196,7 @@ video.addEventListener('play',  () => {
     catch (error){
         countError ++;
     }
-        console.log (detections["0"]);
+       // console.log (detections["0"]);
     if(countError>4)
     {
         alertas.textContent="oh! no te encontramos, ubícate frente a la cámara, revisa si hay mucha o poca luz y cambia de lugar si ese es el caso, por favor no uses objetos que obstruyan tu rostro";
