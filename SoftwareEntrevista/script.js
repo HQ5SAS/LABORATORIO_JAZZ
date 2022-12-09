@@ -1,7 +1,8 @@
 const videoButton= document.getElementById('next_bttn');
 const video = document.getElementById('video_');
 var texto =document.getElementById('pregunta_txt');
-const cronometro = document.getElementById('timer')
+const cronometro = document.getElementById('timer');
+const videoDet =document.getElementById('videodet_');
 var preguntas=[
     'Háblame de ti',
     '¿Qué te gusta hacer en tu tiempo libre?',
@@ -76,6 +77,7 @@ async function init(){
     s = 0;
     
 }
+
 //fn que inicia cámara
 function startWebCamera(stream) 
 {
@@ -151,24 +153,40 @@ try {
 
   }
   //----deteccion de rostro
+// Cargar Modelos
+// Cargar Modelos
 Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri('./models'),
-        faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
-        faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
-        faceapi.nets.faceExpressionNet.loadFromUri('./models')
-      ]).then(init)
+    faceapi.nets.ssdMobilenetv1.loadFromUri('./models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
+    faceapi.nets.faceLandmark68TinyNet.loadFromUri('./models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
+    faceapi.nets.tinyFaceDetector.loadFromUri('./models')
+]).then(init);
 
-      video.addEventListener('play', () => {
-        const canvas = faceapi.createCanvasFromMedia(video)
-        document.body.append(canvas)
-        const displaySize = { width: 100, height: 100 }
-        faceapi.matchDimensions(canvas, displaySize)
-        setInterval(async () => {
-          const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
-          const resizedDetections = faceapi.resizeResults(detections, displaySize);
-          canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-          faceapi.draw.drawDetections(canvas, resizedDetections);
-          faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-          faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-        }, 100);
-})      
+video.addEventListener('play', async () => {
+    // creamos el canvas con los elementos de la face api
+    const canvas = faceapi.createCanvasFromMedia(video);
+    // lo añadimos al body
+    document.body.append(canvas);
+
+    // tamaño del canvas
+    const displaySize = { width: video.width, height: video.height }
+    faceapi.matchDimensions(canvas, displaySize);
+
+    setInterval(async () => {
+        // hacer las detecciones de cara
+        const detections = await faceapi.detectAllFaces(video)
+            .withFaceLandmarks()
+            .withFaceDescriptors()
+
+        // ponerlas en su sitio
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+
+        // limpiar el canvas
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+
+        // dibujar las líneas
+        faceapi.draw.drawDetections(canvas, resizedDetections);
+        console.log(detections);
+    })
+})
