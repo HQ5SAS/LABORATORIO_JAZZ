@@ -2,7 +2,9 @@ const videoButton= document.getElementById('next_bttn');
 const video = document.getElementById('video_');
 var texto =document.getElementById('pregunta_txt');
 const cronometro = document.getElementById('timer');
-const videoDet =document.getElementById('videodet_');
+const divVideo= document.getElementById("cotainer_video");
+var alertas =document.getElementById("alertas");
+
 var preguntas=[
     'Háblame de ti',
     '¿Qué te gusta hacer en tu tiempo libre?',
@@ -75,6 +77,7 @@ async function init(){
     }
     m = 0;
     s = 0;
+    
     
 }
 
@@ -160,33 +163,44 @@ Promise.all([
     faceapi.nets.faceLandmark68Net.loadFromUri('./models'),
     faceapi.nets.faceLandmark68TinyNet.loadFromUri('./models'),
     faceapi.nets.faceRecognitionNet.loadFromUri('./models'),
-    faceapi.nets.tinyFaceDetector.loadFromUri('./models')
+    faceapi.nets.tinyFaceDetector.loadFromUri('./models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('./models')
+    
 ]).then(init);
 
-video.addEventListener('play', async () => {
-    // creamos el canvas con los elementos de la face api
-    const canvas = faceapi.createCanvasFromMedia(video);
-    // lo añadimos al body
-    document.body.append(canvas);
-
-    // tamaño del canvas
-    const displaySize = { width: video.width, height: video.height }
-    faceapi.matchDimensions(canvas, displaySize);
-
+video.addEventListener('play',  () => {
+    countError=0;
     setInterval(async () => {
         // hacer las detecciones de cara
-        const detections = await faceapi.detectAllFaces(video)
-            .withFaceLandmarks()
-            .withFaceDescriptors()
+        const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+        try{
+        var heightFace=detections["0"]["landmarks"]["_imgDims"]["_height"];
+        
+        if (heightFace >=290){
+            alertas.textContent="Alejese un poco de la cámara por favor";
+            alertas.style.display='block'; 
+     //       divVideo.style.backgroundColor = "red";
+        }
+        else if(heightFace <=120){
+            alertas.textContent="Acerquese un poco a la cámara por favor";
+            alertas.style.display='block'; 
+        }
+        else{
+            alertas.textContent="";
+            alertas.style.display='none'; 
+        }
+    }
+    catch (error){
+        countError ++;
+    }
+        console.log (detections["0"]);
+    if(countError>4)
+    {
+        alertas.textContent="oh! no te encontramos, ubícate frente a la cámara, revisa si hay mucha o poca luz y cambia de lugar si ese es el caso, por favor no uses objetos que obstruyan tu rostro";
+            alertas.style.display='block'; 
+        countError=0;    
+    }
 
-        // ponerlas en su sitio
-        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+    },900)
 
-        // limpiar el canvas
-        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-
-        // dibujar las líneas
-        faceapi.draw.drawDetections(canvas, resizedDetections);
-        console.log(detections);
-    })
 })
