@@ -9,15 +9,29 @@ var preguntas=[
     'Háblame de ti',
     '¿Qué te gusta hacer en tu tiempo libre?',
     '¿Por qué te interesa el puesto?',
-    '¿Por qué dejaste tu anterior empleo? ¿Por qué quieres cambiar de empleo?',
-    'Cuéntame de algún momento de tu vida laboral en el que hayas cometido un error, ¿cómo lo solucionaste?',
+    '¿Por qué dejaste tu anterior empleo?',
     '¿Cuál es tu mayor virtud o habilidad?',
     '¿Cuál es tu mayor debilidad o defecto?',
     '¿Por qué deberíamos contratarte?'
 ]
 var countPreguntas=0;
 var transcripcion="";
-
+// deteccion de sonido
+var SoundDetection = require('sound-detection');
+var options = {
+    url: 'http://babymonitorcam/audio.cgi',
+    format: {
+        bitDepth: 16,
+        numberOfChannels: 1,
+        signed: true
+    },
+    triggerLevel: 30
+}
+var detector = new SoundDetection(options, function(dB) {
+    console.log('Noise Detected at %sdB', dB);
+});
+detector.start();
+//
 let mediaRecorder;
 //finción que acutua de forma secuencial para el btn, 
 videoButton.onclick=()=>{
@@ -25,10 +39,37 @@ videoButton.onclick=()=>{
 
     switch(videoButton.textContent){
         case 'Probar sonido':
-            texto.textContent="Diga las palabras Hola, amarillo, adiós";
-            videoButton.textContent ='de nuevo';
+            texto.textContent="Diga las palabras: Hola, como, otros. Después de click en el botón 'Listo'";
+            videoButton.textContent ='Listo';
+            recognition.start();
+            
             break;
         case 'Listo':
+            recognition.abort();   
+            console.log(transcripcion);
+            if (transcripcion.toUpperCase().includes(["HOLA", "COMO","OTROS"]) && transcripcion.length<20)
+            {
+                videoButton.textContent ='Empezar';
+            }
+            else
+            {
+                if(transcripcion.length==0)
+                {
+                    alertas.textContent="No se detecta micrófono, por favor revise su micrófono e intentelo de nuevo";
+                    alertas.style.display='block';  
+                }
+                else{
+                    alertas.textContent="Hay mucho ruido en el ambiente, por favor busque un lugar con ruido mas controlado";
+                    alertas.style.display='block';  
+                }
+                videoButton.textContent ='Probar sonido';
+                transcripcion="";
+
+            }
+            console.log(transcripcion);
+            break;    
+        case 'Empezar':
+            transcripcion="";
             videoButton.textContent ='Siguiente';
             texto.style.marginTop="40%";
             texto.textContent=preguntas[0];
