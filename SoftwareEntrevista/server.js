@@ -1,5 +1,7 @@
 const express =require("express");
 const app= express();
+const functions = require("./script");
+//const faceRecognition = require("./face-api.min")
 //const request = require("request");
 
 app.use(express.static("public"));

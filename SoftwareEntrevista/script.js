@@ -1,3 +1,5 @@
+
+
 const videoButton= document.getElementById('next_bttn');
 const video = document.getElementById('video_');
 var texto =document.getElementById('pregunta_txt');
